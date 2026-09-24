@@ -18,17 +18,19 @@
     // Check command.arguments here.
     [self.commandDelegate runInBackground:^{
         LAContext *context = [LAContext new];
-        NSError *error;
+        NSError *error = nil;
         BOOL passcodeEnabled = [context canEvaluatePolicy:LAPolicyDeviceOwnerAuthentication error:&error];
         
         CDVPluginResult* pluginResult = nil;
         
-        if (error != nil) {
-            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:[error localizedDescription]];
-        } else if (passcodeEnabled) {
+        if (passcodeEnabled) {
             pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"PIN_SETUP"];
-        } else {
+        } else if (error != nil && error.code == LAErrorPasscodeNotSet) {
             pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"NO_PIN_SETUP"];
+        } else if (error != nil) {
+            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:[error localizedDescription]];
+        } else {
+            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Unable to evaluate passcode status"];
         }
         
         

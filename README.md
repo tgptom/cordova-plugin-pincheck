@@ -7,10 +7,17 @@
 
 This plugin is for use with [Apache Cordova](http://cordova.apache.org/) and allows your application to check whether pin/keyguard or passcode is setup on iOS and Android phones.
 
-### Supported platforms
+### Compatibility notes
 
-  * Android
-  * iOS (iOS 8 and above)
+- `cordova-android@14` and `cordova-android@15`: statically assessed as compatible.
+- `cordova-ios@7` and `cordova-ios@8`: statically assessed as compatible.
+- This is a source-level compatibility assessment. It is **not** a claim that runtime/device testing was performed for every platform combination.
+
+> `cordova-ios` package versions are not the same as Apple iOS operating-system versions.
+>  
+> The plugin's iOS native code uses `LocalAuthentication` and returns:
+> - success: `PIN_SETUP`
+> - error: `NO_PIN_SETUP` when no passcode is configured
 
 ## Installation
 
@@ -41,6 +48,31 @@ if(window.cordova && window.cordova.plugins.PinCheck){
       });
     }
 ```
+
+## Automated checks
+
+Run repository checks with:
+
+```sh
+npm test
+```
+
+These checks validate:
+- JavaScript bridge contract (`service`, `action`, and argument shape).
+- `package.json` and `plugin.xml` metadata/version consistency.
+- Static native contract strings and iOS `LAErrorPasscodeNotSet` handling branch.
+
+## Manual device verification checklist
+
+Because LocalAuthentication behavior is device/security-state dependent, complete manual verification on physical devices:
+
+1. Android device with secure lock enabled (PIN/pattern/password) → expect success callback with `PIN_SETUP`.
+2. Android device without secure lock → expect error callback with `NO_PIN_SETUP`.
+3. iOS device with passcode enabled → expect success callback with `PIN_SETUP`.
+4. iOS device without passcode enabled → expect error callback with `NO_PIN_SETUP`.
+
+Optional additional iOS checks:
+- Face ID/Touch ID enabled and disabled, while keeping passcode state controlled.
 
 ## LICENSE
 

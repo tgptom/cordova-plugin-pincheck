@@ -1,6 +1,6 @@
 {
   "name": "cordova-plugin-pincheck",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Checks whether the device has pin passcode setup on device",
   "cordova": {
     "id": "cordova-plugin-pincheck",
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/shangyilim/cordova-plugin-pincheck.git"
+    "url": "git+https://github.com/tgptom/cordova-plugin-pincheck.git"
   },
   "keywords": [
     "ecosystem:cordova",
@@ -27,7 +27,10 @@
   "author": "Lim Shang Yi",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/shangyilim/cordova-plugin-pincheck/issues"
+    "url": "https://github.com/tgptom/cordova-plugin-pincheck/issues"
   },
-  "homepage": "https://github.com/shangyilim/cordova-plugin-pincheck#readme"
+  "homepage": "https://github.com/tgptom/cordova-plugin-pincheck#readme",
+  "scripts": {
+    "test": "node --test"
+  }
 }
